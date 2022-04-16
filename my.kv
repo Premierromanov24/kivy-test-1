@@ -1,0 +1,27 @@
+<MyGrid>
+    name: name
+    oclass: oclass
+    date: date
+    GridLayout:
+        size: root.width, root.height
+        cols:1
+        GridLayout: 
+            cols:2
+            Label:
+                text:"Név"
+            TextInput:
+                id: name
+                multiline:False
+            Label:
+                text:"Osztály"
+            TextInput:
+                id: oclass
+                multiline:False
+            Label:
+                text:"Dátum"
+            TextInput:
+                id: date
+                multiline:False
+        Button:
+            text:"Submit"
+            on_press: root.button1pressed()
