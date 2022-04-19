@@ -81,7 +81,7 @@ class MyGrid(Widget):
                 send("GPS not implemented")
             
             if platform == "android":
-                self.request_android_permissions()
+                self.request_android_permission()
             else:
                 send("Platform is not android")
         if self.Gps_configured:
