@@ -1,27 +1,22 @@
 <MyGrid>
-    name: name
-    oclass: oclass
-    date: date
+    messagefield: messagefield
+    response: response
     GridLayout:
         size: root.width, root.height
         cols:1
         GridLayout: 
             cols:2
-            Label:
-                text:"Név"
+            Button:
+                text:"Submit messaage"
+                on_press: root.messagebuttonpressed()
             TextInput:
-                id: name
+                id: messagefield
                 multiline:False
             Label:
-                text:"Osztály"
+                text:"Response"
             TextInput:
-                id: oclass
-                multiline:False
-            Label:
-                text:"Dátum"
-            TextInput:
-                id: date
+                id: response
                 multiline:False
         Button:
-            text:"Submit"
-            on_press: root.button1pressed()
+            text:"Send location"
+            on_press: root.locbuttonpressed()
