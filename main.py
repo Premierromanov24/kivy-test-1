@@ -8,7 +8,7 @@ from kivy.uix.textinput import TextInput
 from kivy.uix.button import Button
 from kivy.properties import ObjectProperty
 
-"""
+
 import socket
 
 HEADER = 64
@@ -21,16 +21,16 @@ ADDR = (SERVER, PORT)
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client.connect(ADDR)
 
-def send(msg):
+def send(msg) -> str:
     message = msg.encode(FORMAT)
     msg_length = len(message)
     send_length = str(msg_length).encode(FORMAT)
     send_length += b' ' * (HEADER - len(send_length))
     client.send(send_length)
     client.send(message)
-    print(client.recv(2048).decode(FORMAT))
+    return client.recv(2048).decode(FORMAT)
 
-"""
+
 
 
 
@@ -43,11 +43,10 @@ class MyGrid(Widget):
     oclass = ObjectProperty(None)
     date = ObjectProperty(None)
     def button1pressed(self):
-        return 1
-        """
+        self.oclass.text = ""
         if str(self.name.text) == DISCONNECT_MESSAGE:
             send(DISCONNECT_MESSAGE)
-        send(str(self.name.text))"""
+        self.date.text = send(str(self.name.text))
     pass
 
         
