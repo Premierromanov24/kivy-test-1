@@ -44,13 +44,11 @@ class MyApp(App):
         return MyGrid()
 
 class MyGrid(Widget):
-    name = ObjectProperty(None)
-    oclass = ObjectProperty(None)
-    date = ObjectProperty(None)  
+    messagefield = ObjectProperty(None)
+    response = ObjectProperty(None)
     
     Gps_configured = False
-
-    gps_location
+    gps_location = None
 
     def request_android_permission(self):
         from android.permissions import request_permissions, Permission
@@ -71,7 +69,7 @@ class MyGrid(Widget):
     def on_status(self, stype, status):
         self.gps_status = 'type={}\n{}'.format(stype, status)
 
-    def button1pressed(self):
+    def locbuttonpressed(self):
         if not self.Gps_configured:
             
             try:
@@ -86,15 +84,20 @@ class MyGrid(Widget):
                 self.request_android_permissions()
             else:
                 send("Platform is not android")
-        
-        self.oclass.text = ""
-        if str(self.name.text) == DISCONNECT_MESSAGE:
-            send(DISCONNECT_MESSAGE)
-        self.date.text = send(str(self.name.text))
         if self.Gps_configured:
             send(str(self.gps_location))
         else:
             send("Gps is not configured")
+        
+    def messagebuttonpressed(self): 
+        
+        if str(self.messagefield.text) == DISCONNECT_MESSAGE:
+            send(DISCONNECT_MESSAGE)
+            self.response.text = "Disconnected"
+        else:
+            self.response.text = send(str(self.messagefield.text))
+
+        
     pass
 
         
