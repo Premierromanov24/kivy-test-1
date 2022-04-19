@@ -77,18 +77,20 @@ class MyGrid(Widget):
                                 on_status=self.on_status)
                 gps.start()
                 self.Gps_configured = True
+                send("GPS configured succesfully!")
             except NotImplementedError:
                 send("GPS not implemented")
             
             if platform == "android":
                 self.request_android_permissions()
+                send("Platform IS android")
             else:
-                send("Platform is not android")
+                send("Platform is NOT android")
         
         self.oclass.text = ""
-        if str(self.name.text) == DISCONNECT_MESSAGE:
-            send(DISCONNECT_MESSAGE)
-        self.date.text = send(str(self.name.text))
+        #if str(self.name.text) == DISCONNECT_MESSAGE:
+            #send(DISCONNECT_MESSAGE)
+        #self.date.text = send(str(self.name.text))
         if self.Gps_configured:
             send(str(self.gps_location))
         else:
