@@ -63,8 +63,7 @@ class MyGrid(Widget):
                              Permission.ACCESS_FINE_LOCATION], callback)
 
     def on_location(self, **kwargs):
-        self.gps_location = kwargs['lat']
-        send(str(kwargs))
+        self.gps_location = str(kwargs)
 
     def on_status(self, stype, status):
         self.gps_status = 'type={}\n{}'.format(stype, status)
