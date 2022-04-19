@@ -7,6 +7,9 @@ from kivy.uix.gridlayout import GridLayout
 from kivy.uix.textinput import TextInput
 from kivy.uix.button import Button
 from kivy.properties import ObjectProperty
+from kivy.utils import platform
+from kivy.properties import StringProperty
+from plyer import gps
 
 
 import socket
@@ -33,20 +36,59 @@ def send(msg) -> str:
 
 
 
-
 class MyApp(App):
+    
+    
     def build(self):
+        
         return MyGrid()
 
 class MyGrid(Widget):
     name = ObjectProperty(None)
     oclass = ObjectProperty(None)
-    date = ObjectProperty(None)
+    date = ObjectProperty(None)  
+    
+    Gps_configured = False
+
+    def request_android_permission(self):
+        from android.permissions import request_permissions, Permission
+
+        def callback(permissions, results):
+            if all([res for res in results]):
+                print("callback. All permissions granted.")
+            else:
+                print("callback. Some permissions refused.")
+
+        request_permissions([Permission.ACCESS_COARSE_LOCATION,
+                             Permission.ACCESS_FINE_LOCATION], callback)
+
+    def on_location(self, **kwargs):
+        self.gps_location = '\n'.join([
+            '{}={}'.format(k, v) for k, v in kwargs.items()])
+
+    def on_status(self, stype, status):
+        self.gps_status = 'type={}\n{}'.format(stype, status)
+
     def button1pressed(self):
+        if not self.Gps_configured:
+            
+            try:
+                gps.configure(on_location=self.on_location,
+                                on_status=self.on_status)
+                gps.start()
+                self.Gps_configured = True
+            except NotImplementedError:
+                print("GPS not implemented")
+            
+            if platform == "android":
+                self.request_android_permissions()
+        
         self.oclass.text = ""
         if str(self.name.text) == DISCONNECT_MESSAGE:
             send(DISCONNECT_MESSAGE)
         self.date.text = send(str(self.name.text))
+        if self.Gps_configured:
+            send(str(self.gps_location))
     pass
 
         
